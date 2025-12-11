@@ -1,4 +1,4 @@
-# Step-by-Step Guide: Deploying a Service to AWS EKS
+# Complete Guide: Deploying a Service to AWS EKS
 
 Authors: [Wishwa Hettige](https://github.com/wishwa14), Mina Demian
 
