@@ -1,6 +1,6 @@
 # Step-by-Step Guide: Deploying a Service to AWS EKS
 
-Authors: [Wishwa Hettige]([url](https://github.com/wishwa14)), Mina Demian
+Authors: [Wishwa Hettige](https://github.com/wishwa14), Mina Demian
 
 **Estimated Time**
 - 🕐 First time: 2-3 hours
