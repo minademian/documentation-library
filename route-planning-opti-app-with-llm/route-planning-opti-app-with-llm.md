@@ -7,8 +7,8 @@ By the time we put down our tools, we had 315 mock cars assigned to over
 Service API.
 
 <figure style="text-align: center;">
-<a href="https://projects.minademian.com/docs-lib/route-planning.mp4"><img src="images/final-tn.png" width="640" alt="Demo Video" /></a>
-<figcaption style="text-align: center;">Screencast: (click to watch)</figcaption>
+  <p><a href="https://projects.minademian.com/docs-lib/route-planning.mp4"><img src="images/final-tn.png" width="640" alt="Demo Video" /></a></p>
+  <figcaption style="text-align: center;">Screencast: (click to watch)</figcaption>
 </figure>
 
 The interesting part isn't *just* what we built. It's how we kept an AI
@@ -100,7 +100,7 @@ The initial plotting of drivers and orders looked odd. We jostled with
 Copilot to get it to spread the markers out.
 
 <figure style="text-align: center;">
-<img src="images/route-planning-opti-1035.png" width="640" alt="Hour 1: Scope Pivot" />
+<<img src="images/route-planning-opti-1035.png" width="640" alt="Hour 1: Scope Pivot" />
 <figcaption style="text-align: center;">Hour 1: Scope Pivot</figcaption>
 </figure>
 
@@ -143,7 +143,7 @@ Copilot implemented the route calculation and rendering on the map with
 no errors. No iteration. Just straight-up working code.
 
 <figure style="text-align: center;">
-<a href="https://projects.minademian.com/docs-lib/after-prompt.mp4"><img src="images/after-prompt-tn.png" width="640" alt="Demo Video" /></a>
+<p><a href="https://projects.minademian.com/docs-lib/after-prompt.mp4"><img src="images/after-prompt-tn.png" width="640" alt="Demo Video" /></a></p>
 <figcaption style="text-align: center;">Screencast: (click to watch)</figcaption>
 </figure>
 
