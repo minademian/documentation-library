@@ -6,11 +6,9 @@ By the time we put down our tools, we had 315 mock cars assigned to over
 1000 mock bookings with real distance calculations via the AWS Location
 Service API.
 
-<figure>
-<a
-href="https://projects.minademian.com/docs-lib/route-planning.mp4"><img
-src="images/final-tn.png" width="640" alt="Demo Video" /></a>
-<figcaption>Screencast: (click to watch)</figcaption>
+<figure style="text-align: center;">
+<a href="https://projects.minademian.com/docs-lib/route-planning.mp4"><img src="images/final-tn.png" width="640" alt="Demo Video" /></a>
+<figcaption style="text-align: center;">Screencast: (click to watch)</figcaption>
 </figure>
 
 The interesting part isn't *just* what we built. It's how we kept an AI
@@ -101,8 +99,10 @@ travelers, and some toggles to filter what you could see on the screen.
 The initial plotting of drivers and orders looked odd. We jostled with
 Copilot to get it to spread the markers out.
 
-![Hour 1: Scope
-Pivot](images/route-planning-opti-1035.png){style="width:80.0%"}
+<figure style="text-align: center;">
+<img src="images/route-planning-opti-1035.png" width="640" alt="Hour 1: Scope Pivot" />
+<figcaption style="text-align: center;">Hour 1: Scope Pivot</figcaption>
+</figure>
 
 ### Hour 2: Geographic Boundaries
 
@@ -122,8 +122,10 @@ We also instructed Copilot to switch to street maps instead of satellite
 view, and it switched to another map provider by itself. This
 demonstrated that the LLM took good initiative within clear constraints.
 
-![Hour 2: Geographic
-Boundaries](images/route-planning-opti-1103.png){style="width:80.0%"}
+<figure style="text-align: center;">
+<img src="images/route-planning-opti-1103.png" width="640" alt="Hour 2: Geographic Boundaries" />
+<figcaption style="text-align: center;">Hour 2: Geographic Boundaries</figcaption>
+</figure>
 
 ### Hour 2.5: The Win --- AWS Location Service
 
@@ -140,10 +142,9 @@ the AWS documentation.
 Copilot implemented the route calculation and rendering on the map with
 no errors. No iteration. Just straight-up working code.
 
-<figure>
-<a href="https://projects.minademian.com/docs-lib/after-prompt.mp4"><img
-src="images/after-prompt-tn.png" width="640" alt="Demo Video" /></a>
-<figcaption>Screencast: (click to watch)</figcaption>
+<figure style="text-align: center;">
+<a href="https://projects.minademian.com/docs-lib/after-prompt.mp4"><img src="images/after-prompt-tn.png" width="640" alt="Demo Video" /></a>
+<figcaption style="text-align: center;">Screencast: (click to watch)</figcaption>
 </figure>
 
 I'm not a high-fiver, but there were reports of high-fiving and
@@ -166,8 +167,10 @@ Immediate performance improvement.
 **Design decision:** This was a human UX call that Copilot couldn't make
 --- it needed explicit direction on *why* to simplify, not just *how*.
 
-![Hour 3: Frontend
-Performance](images/route-planning-opti-1115.png){style="width:80.0%"}
+<figure style="text-align: center;">
+<img src="images/route-planning-opti-1115.png" width="640" alt="Hour 3: Frontend Performance" />
+<figcaption style="text-align: center;">Hour 3: Frontend Performance</figcaption>
+</figure>
 
 ### Hour 4.5: Demo Cutoff
 
@@ -182,8 +185,10 @@ executed) - Actual optimization algorithm (used naive closest-driver
 assignment) - Constraint handling (promised in the original spec, not
 implemented)
 
-![Hour 4.5: Just Before the
-Demo](images/route-planning-opti-1445.png){style="width:80.0%"}
+<figure style="text-align: center;">
+<img src="images/route-planning-opti-1445.png" width="640" alt="Hour 4.5: Just Before the Demo" />
+<figcaption style="text-align: center;">Hour 4.5: Just Before the Demo</figcaption>
+</figure>
 
 ------------------------------------------------------------------------
 
