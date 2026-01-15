@@ -2,4 +2,4 @@
 internal/
 *.pdf
 *.html
-_DS_Store
+.DS_Store
