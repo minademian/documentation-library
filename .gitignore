@@ -1,2 +1,5 @@
 .idea/
 internal/
+*.pdf
+*.html
+_DS_Store
