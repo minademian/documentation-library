@@ -3,3 +3,4 @@ internal/
 *.pdf
 *.html
 .DS_Store
+*.png.backup
