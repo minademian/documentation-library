@@ -1,0 +1,21 @@
+\usepackage{listings}
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=single,
+  xleftmargin=0pt,
+  xrightmargin=0pt
+}
+
+% Override pandoc's Highlighting environment
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+  breaklines=true,
+  breakanywhere=true,
+  fontsize=\scriptsize,
+  xleftmargin=0pt,
+  xrightmargin=0pt
+}
