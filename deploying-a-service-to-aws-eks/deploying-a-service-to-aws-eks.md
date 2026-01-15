@@ -49,15 +49,15 @@ Developer → Git Push → GitHub Actions → Docker Build → ECR → Helm Depl
 
 ## Prerequisite: Create Your EKS Namespace
 
-> If you haven't already, [set up your CLI environment](https://cabonline.atlassian.net/wiki/spaces/CID/pages/4093116423/Working+with+AWS+Kubernetes).
+> If you haven't already, set up your CLI environment with `kubectl` and `aws`.
 
 ```bash
-kubectl create namespace flygtaxi-dev
+kubectl create namespace foo-dev
 ```
 
 **Verify:**
 ```bash
-kubectl get namespaces | grep flygtaxi-dev
+kubectl get namespaces | grep foo-dev
 ```
 
 ## Part 1: Set Up AWS Infrastructure with Terraform
@@ -81,9 +81,9 @@ $ cd terraform/build/eu-north-1
 
 **Create `ecr.tf`:**
 ```terraform
-module "dev_cabonline_serviceasonestring_ecr" {
-  source = "git@github.com:CabonlineTeam/Infra-Terraform-Resources.git//_modules/terraform-aws-cabonline-ecr"
-  name   = "cabonline-service-in-kebab-case"
+module "dev_serviceasonestring_ecr" {
+  source = "git@github.com:org/terraform-repo.git//_modules/terraform-aws-ecr"
+  name   = "service-in-kebab-case"
   env    = "dev"
 }
 ```
@@ -91,7 +91,7 @@ module "dev_cabonline_serviceasonestring_ecr" {
 **Create `irsa.tf`:**
 ```terraform
 resource "aws_iam_policy" "additional" {
-  name        = "dev-cabonline-service-additional"
+  name        = "dev--service-additional"
   description = "Additional test policy"
 
   policy = jsonencode({
@@ -115,11 +115,11 @@ resource "aws_iam_policy" "additional" {
 }
 
 module "irsa_role" {
-  source       = "git@github.com:CabonlineTeam/Infra-Terraform-Resources.git//_modules/terraform-aws-cabonline-irsa"
-  eks_name     = "dev-col-eu-north-1-eks"
+  source       = "git@github.com:Team/terraform-repo.git//_modules/terraform-aws--irsa"
+  eks_name     = "eks-cluster-name"
   namespace    = "<EKS namespace>"
   policy       = aws_iam_policy.additional.arn
-  name         = "cabonline-service"
+  name         = "-service"
   env          = "dev"
   sa_name      = "service-account-name"
 }
@@ -131,16 +131,15 @@ provider "aws" {
   region = "eu-north-1"
 
   assume_role {
-    role_arn = "arn:aws:iam::165660931457:role/TerraformAdminRole"
+    role_arn = "arn:aws:iam::your-account-id:role/TerraformAdminRole"
   }
 
   default_tags {
     tags = {
       BackupPolicy = "Default"
-      Owner        = "Cabonline"
-      Repository   = "CabonlineTeam/service"
+      Owner        = ""
+      Repository   = "Team/service"
       Service      = "ServiceInCapitalCase"
-      map-migrated = "migEP5EHDU6ZD"
     }
   }
 }
@@ -155,7 +154,7 @@ $ cd terraform/dev/eu-north-1
 Create `irsa.tf`
 ```terraform
 resource "aws_iam_policy" "additional" {
-  name        = "dev-cabonline-service-in-kebab-case-additional"
+  name        = "dev--service-in-kebab-case-additional"
   description = "Additional test policy"
 
   policy = jsonencode({
@@ -187,11 +186,11 @@ resource "aws_iam_policy" "additional" {
 }
 
 module "irsa_role" {
-  source          = "git@github.com:CabonlineTeam/Infra-Terraform-Resources.git//_modules/terraform-aws-cabonline-irsa"
-  eks_name              = "dev-col-eu-north-1-eks"
-  namespace             = "flygtaxi-dev"
+  source          = "git@github.com:org/terraform-repo.git//_modules/terraform-aws-irsa"
+  eks_name              = "eks-cluster-name"
+  namespace             = "foo-dev"
   policy                = aws_iam_policy.additional.arn
-  name                  = "cabonline-service-in-kebab-case"
+  name                  = "-service-in-kebab-case"
   env                   = "dev"
   sa_name               = "service"
 }
@@ -204,16 +203,16 @@ provider "aws" {
   region = "eu-north-1"
 
   assume_role {
-    role_arn = "arn:aws:iam::369171354678:role/TerraformAdminRole"
+    role_arn = "arn:aws:iam::00000000000:role/TerraformAdminRole"
   }
 
   default_tags {
     tags = {
       BackupPolicy = "Default"
-      Owner        = "Cabonline"
-      Repository   = "CabonlineTeam/repository"
+      Owner        = ""
+      Repository   = "org/repository"
       Service      = "ServiceInCapitalCase"
-      map-migrated = "migEP5EHDU6ZD"
+       = "migEP5EHDU6ZD"
     }
   }
 }
@@ -232,12 +231,12 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "cabonline-tf-state-369171354678-eu-north-1"
-    key    = "eu-north-1/flygtaxi-frontdoor-dev/terraform.tfstate"
+    bucket = "-tf-state-00000000000-eu-north-1"
+    key    = "eu-north-1/foo-frontdoor-dev/terraform.tfstate"
     region = "eu-north-1"
 
     assume_role = {
-      role_arn = "arn:aws:iam::369171354678:role/TerraformAdminRole"
+      role_arn = "arn:aws:iam::00000000000:role/TerraformAdminRole"
     }
   }
 }
@@ -293,14 +292,14 @@ namespace: <EKS namespace you'll be deploying to>
 replicaCount: 1
 region: eu-north-1
 
-domain: dev-internaledge.cabonline.io
+domain: dev-internaledge..io
 suburl: <service name>
 externaldomain:
   enabled: true
-  domain: api.dev.cabonline.io
+  domain: api.dev..io
 
 image:
-  repository: 165660931457.dkr.ecr.eu-north-1.amazonaws.com/<ECR repository>:<service name>-latest
+  repository: your-account-id.dkr.ecr.eu-north-1.amazonaws.com/<ECR repository>:<service name>-latest
   pullPolicy: Always
 
 port: 8080
@@ -338,7 +337,7 @@ env: # add your own environment variables here
 
 ### Step 2.4: Create Deployment Template
 
-> If you're deploying a Java application, you can reuse the standard templates in the [cabonline-helm](https://github.com/CabonlineTeam/cabonline-helm) repository. Otherwise, you'll have to override the deployment template as shown in the [Appendix](#Appendix). Same applies to other templates like service, service account, etc.
+> If you're deploying a Java application, you can reuse the standard templates in the [-helm](https://github.com/Team/-helm) repository. Otherwise, you'll have to override the deployment template as shown in the [Appendix](#Appendix). Same applies to other templates like service, service account, etc.
 
 ### Step 2.5: Validate Helm Chart
 
@@ -361,10 +360,10 @@ helm template test-release ./helm \
 ```yaml
 kind: ServiceAccount
 metadata:
-  name: flygtaxi-dev-frontdoor
-  namespace: flygtaxi-dev
+  name: foo-dev-frontdoor
+  namespace: foo-dev
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::369171354678:role/...
+    eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/...
 ```
 
 ---
@@ -434,7 +433,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::165660931457:role/GithubActions-GithubActionsManagementRole
+          role-to-assume: arn:aws:iam::your-account-id:role/GithubActions-GithubActionsManagementRole
           aws-region: ${{ inputs.aws_region }}
 
       - name: Login to Amazon ECR
@@ -611,10 +610,10 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
-        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/CabonlineTeam/cabonline-helm cabonline-helm
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/Team/-helm -helm
         # Only copy if files don't exist locally
-        [ ! -f "${{ inputs.chart_dir }}/templates/service.yaml" ] && cp cabonline-helm/templates/service.yaml ${{ inputs.chart_dir }}/templates/ || echo "service.yaml already exists, skipping"
-        [ ! -f "${{ inputs.chart_dir }}/templates/serviceaccount.yaml" ] && cp cabonline-helm/templates/serviceaccount.yaml ${{ inputs.chart_dir }}/templates/ || echo "serviceaccount.yaml already exists, skipping"
+        [ ! -f "${{ inputs.chart_dir }}/templates/service.yaml" ] && cp -helm/templates/service.yaml ${{ inputs.chart_dir }}/templates/ || echo "service.yaml already exists, skipping"
+        [ ! -f "${{ inputs.chart_dir }}/templates/serviceaccount.yaml" ] && cp -helm/templates/serviceaccount.yaml ${{ inputs.chart_dir }}/templates/ || echo "serviceaccount.yaml already exists, skipping"
     
     - name: Ensure all YAML files were copied over
       shell: bash
@@ -676,7 +675,7 @@ runs:
 
 **Create `.github/workflows/deploy-my-service.yaml`:**
 ```yaml
-name: Build and deploy Flygtaxi Dev Frontdoor to EKS
+name: Build and deploy foo Dev Frontdoor to EKS
 
 on:
   workflow_dispatch:
@@ -705,7 +704,7 @@ jobs:
   build-and-push-frontdoor:
     uses: "./.github/workflows/build-push-ecr.yaml"
     with:
-      image: "flygtaxi-dev-frontdoor"
+      image: "foo-dev-frontdoor"
       app_dir_path: "./common-apps/frontdoor/"
       environment: ${{ github.event.inputs.environment }}
       branch: ${{ github.event.inputs.branch || github.ref_name }}
@@ -752,7 +751,7 @@ In your GitHub repository:
 **Option 1: Via GitHub UI**
 1. Go to your repository on GitHub
 2. Click "Actions" tab
-3. Select "Build and deploy Flygtaxi Dev Frontdoor to EKS"
+3. Select "Build and deploy foo Dev Frontdoor to EKS"
 4. Click "Run workflow"
 5. Fill in inputs:
    - Environment: `dev`
@@ -777,7 +776,7 @@ gh run watch
 
 **Check deployment status:**
 ```bash
-kubectl get deployment -n flygtaxi-dev flygtaxi-dev-frontdoor
+kubectl get deployment -n foo-dev foo-dev-frontdoor
 ```
 
 **Expected Output:**
@@ -819,7 +818,7 @@ kubectl get sa -n <EKS namespace> <service name> -o jsonpath='{.metadata.annotat
 
 **Expected Output:**
 ```
-arn:aws:iam::369171354678:role/cabonline-service-role/dev-cabonline-flygtaxi-frontdoor-dev-eu-north-1
+arn:aws:iam::00000000000:role/-service-role/dev--foo-frontdoor-dev-eu-north-1
 ```
 
 ---
@@ -830,18 +829,18 @@ arn:aws:iam::369171354678:role/cabonline-service-role/dev-cabonline-flygtaxi-fro
 
 **Symptom:**
 ```bash
-kubectl get pods -n flygtaxi-dev
+kubectl get pods -n foo-dev
 NAME                                      READY   STATUS             RESTARTS   AGE
-flygtaxi-dev-frontdoor-c8c59c859-abc12   0/1     CrashLoopBackOff   3          2m
+foo-dev-frontdoor-c8c59c859-abc12   0/1     CrashLoopBackOff   3          2m
 ```
 
 **Diagnosis:**
 ```bash
 # Check logs
-kubectl logs -n flygtaxi-dev deployment/flygtaxi-dev-frontdoor
+kubectl logs -n foo-dev deployment/foo-dev-frontdoor
 
 # Check events
-kubectl describe pod -n flygtaxi-dev -l app=flygtaxi-dev-frontdoor
+kubectl describe pod -n foo-dev -l app=foo-dev-frontdoor
 ```
 
 **Common Causes:**
@@ -853,21 +852,21 @@ kubectl describe pod -n flygtaxi-dev -l app=flygtaxi-dev-frontdoor
 
 **Symptom:**
 ```
-Error: pods "flygtaxi-dev-frontdoor-xxx" is forbidden: error looking up service account
+Error: pods "foo-dev-frontdoor-xxx" is forbidden: error looking up service account
 ```
 
 **Solution:**
 ```bash
 # Verify ServiceAccount exists
-kubectl get sa -n flygtaxi-dev flygtaxi-dev-frontdoor
+kubectl get sa -n foo-dev foo-dev-frontdoor
 
 # If missing, check Helm release
-helm get manifest -n flygtaxi-dev flygtaxi-dev-frontdoor | grep -A 10 "kind: ServiceAccount"
+helm get manifest -n foo-dev foo-dev-frontdoor | grep -A 10 "kind: ServiceAccount"
 
 # Manually create if needed
-kubectl create serviceaccount flygtaxi-dev-frontdoor -n flygtaxi-dev
-kubectl annotate serviceaccount flygtaxi-dev-frontdoor -n flygtaxi-dev \
-  eks.amazonaws.com/role-arn=arn:aws:iam::369171354678:role/cabonline-service-role/dev-cabonline-flygtaxi-frontdoor-dev-eu-north-1
+kubectl create serviceaccount foo-dev-frontdoor -n foo-dev
+kubectl annotate serviceaccount foo-dev-frontdoor -n foo-dev \
+  eks.amazonaws.com/role-arn=arn:aws:iam::00000000000:role/-service-role/dev--foo-frontdoor-dev-eu-north-1
 ```
 
 ### Issue 3: Image Pull Errors
@@ -891,7 +890,7 @@ aws iam list-attached-role-policies \
   --role-name <eks-node-role-name>
 
 # Verify image pull policy
-kubectl get deployment -n flygtaxi-dev flygtaxi-dev-frontdoor -o jsonpath='{.spec.template.spec.containers[0].imagePullPolicy}'
+kubectl get deployment -n foo-dev foo-dev-frontdoor -o jsonpath='{.spec.template.spec.containers[0].imagePullPolicy}'
 ```
 
 ### Issue 4: Health Check Failures
@@ -904,13 +903,13 @@ Readiness probe failed: Get "http://10.x.x.x:8080/": context deadline exceeded
 **Solution:**
 ```bash
 # Check if app is listening on correct port
-kubectl exec -n flygtaxi-dev deployment/flygtaxi-dev-frontdoor -- netstat -tlnp
+kubectl exec -n foo-dev deployment/foo-dev-frontdoor -- netstat -tlnp
 
 # Test endpoint manually
-kubectl exec -n flygtaxi-dev deployment/flygtaxi-dev-frontdoor -- curl localhost:8080/health
+kubectl exec -n foo-dev deployment/foo-dev-frontdoor -- curl localhost:8080/health
 
 # Check logs for errors
-kubectl logs -n flygtaxi-dev deployment/flygtaxi-dev-frontdoor | grep -i error
+kubectl logs -n foo-dev deployment/foo-dev-frontdoor | grep -i error
 ```
 
 ### Issue 5: Deployment Updates Not Reflecting
@@ -921,13 +920,13 @@ Old code still running after deployment
 **Solution:**
 ```bash
 # Force pod restart
-kubectl rollout restart deployment -n flygtaxi-dev flygtaxi-dev-frontdoor
+kubectl rollout restart deployment -n foo-dev foo-dev-frontdoor
 
 # Check rollout status
-kubectl rollout status deployment -n flygtaxi-dev flygtaxi-dev-frontdoor
+kubectl rollout status deployment -n foo-dev foo-dev-frontdoor
 
 # Verify image tag
-kubectl get deployment -n flygtaxi-dev flygtaxi-dev-frontdoor -o jsonpath='{.spec.template.spec.containers[0].image}'
+kubectl get deployment -n foo-dev foo-dev-frontdoor -o jsonpath='{.spec.template.spec.containers[0].image}'
 ```
 
 ---
