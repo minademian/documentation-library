@@ -1,0 +1,107 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type" : "AdaptiveCard",
+  "version" : "1.5",
+  "body" : [ {
+    "type" : "TextBlock",
+    "text" : "Worklog Entry - Week 42",
+    "weight" : "Bolder",
+    "size" : "Medium"
+  }, {
+    "type" : "TextBlock",
+    "text" : "2025-10-13 - 2025-10-17",
+    "size" : "Small",
+    "color" : "Accent",
+    "spacing" : "None"
+  }, {
+    "type" : "Container",
+    "style" : "emphasis",
+    "spacing" : "Medium",
+    "items" : [ {
+      "type" : "Input.ChoiceSet",
+      "id" : "day_1",
+      "label" : "Day",
+      "style" : "compact",
+      "choices" : [ {
+        "title" : "Monday - 2025-10-13",
+        "value" : "Monday - 2025-10-13"
+      }, {
+        "title" : "Tuesday - 2025-10-14",
+        "value" : "Tuesday - 2025-10-14"
+      }, {
+        "title" : "Wednesday - 2025-10-15",
+        "value" : "Wednesday - 2025-10-15"
+      }, {
+        "title" : "Thursday - 2025-10-16",
+        "value" : "Thursday - 2025-10-16"
+      }, {
+        "title" : "Friday - 2025-10-17",
+        "value" : "Friday - 2025-10-17"
+      } ]
+    }, {
+      "type" : "ColumnSet",
+      "spacing" : "Small",
+      "columns" : [ {
+        "type" : "Column",
+        "width" : 15,
+        "items" : [ {
+          "type" : "Input.Text",
+          "id" : "jira_1",
+          "label" : "JIRA Task ID",
+          "placeholder" : "DICH-123"
+        } ]
+      }, {
+        "type" : "Column",
+        "width" : 10,
+        "items" : [ {
+          "type" : "Input.Text",
+          "id" : "days_1",
+          "label" : "Days",
+          "placeholder" : "0"
+        } ]
+      }, {
+        "type" : "Column",
+        "width" : 10,
+        "items" : [ {
+          "type" : "Input.Text",
+          "id" : "hours_1",
+          "label" : "Hours",
+          "placeholder" : "0"
+        } ]
+      }, {
+        "type" : "Column",
+        "width" : 10,
+        "items" : [ {
+          "type" : "Input.Text",
+          "id" : "minutes_1",
+          "label" : "Minutes",
+          "placeholder" : "0"
+        } ]
+      }, {
+        "type" : "Column",
+        "width" : 9,
+        "verticalContentAlignment" : "Bottom",
+        "spacing" : "Small",
+        "items" : [ {
+          "type" : "ActionSet",
+          "actions" : [ {
+            "type" : "Action.Submit",
+            "title" : "+",
+            "data" : {
+              "action" : "addRow",
+              "rows" : 1
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  } ],
+  "actions" : [ {
+    "type" : "Action.Submit",
+    "title" : "Submit Worklog",
+    "style" : "positive",
+    "data" : {
+      "action" : "submit"
+    }
+  } ]
+}
