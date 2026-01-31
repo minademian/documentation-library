@@ -41,7 +41,9 @@
 
 ## Background
 
-The idea for this project came from a weekly grappling with submitting time reports in JIRA Worklogs. The UI/UX is clumsy and maddening, and I strongly think that it's counterintuitive to how someone would input their time report.
+Time tracking is one of those problems every engineer faces... and almost every solution makes it worse. It ends up being a weekly ritual of grappling with JIRA Worklogs. The UI/UX is clumsy and maddening, requiring multiple clicks and page loads.
+
+This doc describes a Microsoft Teams bot that reduces that pain point down to a single Adaptive Card interface.
 
 ![JIRA Worklog UI](./images/jira_worklog_ui_1.png)
 
@@ -83,7 +85,8 @@ The main solution design goals for this project are:
 
 ## Design Decisions
 
-1. To avoid further setup with Task Modules in Teams, I opted for Adaptive Cards to keep the implementation simple and straightforward. Task Modules would have added complexity without significant benefit for this use case and it would have made it harder for someone else to maintain in the future.
+1. To avoid further setup with Task Modules in Teams, I opted for Adaptive Cards to keep the implementation simple and straightforward. Task Modules would have added complexity without significant benefit for this use case and it would have made it harder for someone else to maintain in the future. 
+    > Task Modules (Microsoft's term for modal pop-ups in Teams) would have required hosting a separate web page, integrating the Teams SDK, and handling a more complex `task/fetch/task/submit` message protocol. For a form with five input fields, that's overkill. Adaptive Cards render inline from a JSON payload. The tradeoff is less UI flexibility. But for a worklog form, I didn't need custom HTML.
 2. I went with Java to get better at it!
 3. I opted for Spring Boot, rather than Micronaut/Quarkus for Lambda because Java is the in-house language of choice and going with another technology (albeit cool!) would have added unnecessary complexity.
 3. Although the documentation suggests and encourages the use of Azure Functions for serverless applications, I chose AWS Lambda to keep it to my own AWS setup.
@@ -109,13 +112,13 @@ The main solution design goals for this project are:
 ### Data Models
 
 #### WorklogEntry
-The core data structure representing a single time entry:
+The core data structure representing a single time entry. Each worklog entry captures four things: the date, the task identifier, and the time spent (broken into days/hours/minutes for flexibility). We keep everything as strings because Adaptive Card inputs are text-based—parsing happens at the boundary, not in the data model.
 
 ```java
 @Data
 public class WorklogEntry {
     private String day;       // "Monday - 2025-10-13" (parsed to LocalDate)
-    private String jiraId;    // "DICH-123"
+    private String jiraId;    // "XYZ-123"
     private String days;      // "0" or "1" (optional)
     private String hours;     // "2"
     private String minutes;   // "30"
@@ -152,7 +155,7 @@ When a user clicks "Submit Worklog", Teams sends an `Action.Submit` activity to 
   "value": {
     "action": "submit",
     "day_1": "Monday - 2025-10-13",
-    "jira_1": "DICH-123",
+    "jira_1": "XYZ-123",
     "days_1": "0",
     "hours_1": "2",
     "minutes_1": "30",
@@ -257,7 +260,7 @@ turnContext.updateActivity(updateActivity);
 **Response Structure:**
 ```
 ✅ Successfully submitted:
-• DICH-123 - 2025-10-13 (2h 30m)
+• XYZ-123 - 2025-10-13 (2h 30m)
 • PROJ-456 - 2025-10-14 (3h)
 
 ❌ Failed to submit:
@@ -330,9 +333,9 @@ Given this traffic pattern:
 - 1 API Gateway route (POST /worklog)
 - _[Optional]_ CloudWatch event rule to wake the function before load time.
 
-### Production Readiness
+### Current Production Readiness
 - [x] Logging & monitoring strategy
-- [x] Load testing (simulation included)
+- [x] Load testing (simulation [below](#appendix-load-simulation-details))
 - [ ] OAuth implementation
 - [ ] Secrets management (AWS Secrets Manager)
 - [ ] Incident response runbook
