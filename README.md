@@ -4,7 +4,7 @@
 
 [![Documentation Status](https://img.shields.io/badge/docs-active-brightgreen.svg)](.)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Last Updated](https://img.shields.io/badge/updated-December%202025-blue.svg)](.)
+[![Last Updated](https://img.shields.io/badge/updated-January%202026-blue.svg)](.)
 
 ## What This Is
 
@@ -23,6 +23,8 @@ These aren't theoretical tutorials—they're the runbooks I wish I had when I fi
 
 | Document | Last Updated | Status |
 |----------|-------------|---------|
+| [JIRA Worklogs Bot](./jira-worklogs-bot/) | Jan 2026 | ✅ Active |
+| [Route Planning with LLM](./route-planning-opti-app-with-llm/) | Jan 2026 | ✅ Active |
 | [Deploying to AWS EKS](./deploying-a-service-to-aws-eks/) | Dec 2025 | ✅ Active |
 
 ### Infrastructure & Platform Engineering
@@ -41,6 +43,36 @@ The complete end-to-end playbook I developed for deploying containerized service
 **Who it's for:** Platform engineers, DevOps engineers, SREs  
 **Level:** Intermediate to Advanced  
 **Time:** 2-3 hours (first deployment), 30 min (subsequent)
+
+### System Design
+
+#### [JIRA Worklogs Bot](./jira-worklogs-bot/)
+A complete system design document for a Microsoft Teams bot that simplifies JIRA time tracking. Born from weekly frustration with JIRA's clunky worklog UI.
+
+**What's inside:**
+- Full system context and integration architecture
+- Microsoft Teams Adaptive Card interface design
+- AWS Lambda + Spring Boot 3 backend design
+- Data flow diagrams and API contracts
+- Load simulation and performance SLOs
+- Production readiness considerations
+
+**Who it's for:** Backend engineers, System designers, Teams integration developers  
+**Level:** Intermediate  
+
+### AI-Assisted Development
+
+#### [Route Planning Optimization with LLM](./route-planning-opti-app-with-llm/)
+A hackathon post-mortem documenting how we built a working route optimizer in 4.5 hours using GitHub Copilot as a third team member—and the constraints we used to keep it from derailing us.
+
+**What's inside:**
+- The constraint prompt that kept the AI agent productive
+- Real-world lessons on LLM-assisted coding
+- AWS Location Service integration patterns
+- Why "we drive, you execute" matters
+
+**Who it's for:** Engineers exploring AI coding assistants, Hackathon participants  
+**Level:** All levels  
 
 ---
 
@@ -97,14 +129,14 @@ Every guide I write follows the same pattern—because it works:
 
 My documentation spans the stack I work with day-to-day:
 
-| Category | Technologies |
-|----------|-------------|
+| Category | Technologies                         |
+|----------|--------------------------------------|
 | **Cloud** | AWS (EKS, ECR, IAM, VPC, CloudWatch) |
-| **Orchestration** | Kubernetes, Helm, Docker |
-| **Infrastructure** | Terraform, CloudFormation |
-| **CI/CD** | GitHub Actions, GitLab CI |
-| **Languages** | Python, Go, Shell scripting |
-| **Observability** | Prometheus, Grafana, CloudWatch |
+| **Orchestration** | Kubernetes, Helm, Docker, Atlantis   |
+| **Infrastructure** | Terraform, CloudFormation            |
+| **CI/CD** | GitHub Actions, GitLab CI            |
+| **Languages** | Python, Go, Shell scripting          |
+| **Observability** | CloudWatch                           |
 
 *This list grows as I document new systems and tools.*
 
