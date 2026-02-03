@@ -1,0 +1,29 @@
+# Part I - Lessons Learned
+_Originally written and posted on LinkedIn, March 2, 2025_. _This is the first part of a series entitled React Native App in Production Series._
+
+I’ve been working on a React Native application for almost a year, in a voluntary capacity, for my church. It’s an app which houses many of our liturgical (communal prayer) tests in electronic format. A release finally went to review in both Apple Store and Google Play Store yesterday, that release not bouncing back immediately by their first-line automated checks! Both apps went live this past Friday evening. It’s still rather sublime, it’s started to sink in.
+
+I inherited a codebase that had been fallen into disrepair since 2018. Most packages were at least 5 years behind, and the initial React Native version I remember seeing was in either 0.5x or 0.4x. If the React Native Upgrade Helper had a voice, it would have audibly gasped and taken a mental health day. Best practices weren’t followed in the code and the original iteration of the app seems to have been written by a solo developer, probably as his first major project. We’ve all been there. But the empathy wore out soon after.
+
+Looking back at the past 10 months has made me reflect on the main lessons learned, how the process has helped improve my craft, and understand how real-world software works.
+
+**Technical debt has consequences.** I think this particular project was an extreme outlier. But the project had collected thick layers of dust and in the world of React Native, a year behind is almost like a decade. I had no idea what I was signing up for when I volunteered to get the app going again. The amount of obstacles to surmount in order to get the project going were many. They tested my patience and sanity.
+
+**React Native is a needy beast to appease.** I had started the project, thinking that getting the project up and running is simply a matter of upgrading to the latest and just building the ‘thing’. I found out soon that that was naïveté that went with the wind. Upgrading to a reasonably current version of RN was more painful. Then, the pain was compounded by getting the bundler to run and the app to build for either platform. It was a storm of upgrading files between hundreds of Stack Overflow tabs. The tooling and setup are temperamental, and I’m still amazed by how the product and community continue to grow, given how pubescent the compiler and bundler often behave. “NO! BROKEN!,” the tooling says, before it shouts silent treatment from the command-line.
+
+**The impulse of overengineering can be both controlled and tamed for other purposes.** After upgrading the project and getting an initial build that didn’t explode in my face on simulators, I had to make sense of code errors and bugs that ranged from silent bugs that suddenly found their voice to code failing after libraries were updating. After fixing most, I realized that some things - maybe just one thing - can be refactored. Soon enough, I was redesigning, re-architecting, and moving over to a full-blown TypeScript setup. (The original codebase is in plain, untyped JavaScript.) I reasoned that I should perhaps bite the bullet now and get the new release of the app into TypeScript. Bring in the Context API, hooks, and so on.
+
+Enter stage left, reason and experience. The tradeoff between doing a proper rewrite, against the original goal of ‘just publish a new version of the app’, was too big. I had to put aside my better judgment to focus on the mission - getting the app out.
+
+So, I moved the new setup into a separate fork and focused on getting the original code, working. I had to do an 11th-hour refactor of the database layer when pre-release testing was failing catastrophically on Android. When no amount of elbow grease and prayers into the bundler worked, I just had to bite the bullet and refactor the database layer. And I was able to do it in an evening. A really basic Singleton pattern. Once that was in place, the app worked beautifully again in Android. The refactoring came in at the right time and saved the project.
+
+**React Native development makes you a certain kind of full-stack.** Understanding native SDKs, how to harmonize assets between platforms, how to think holistically about testing across simulators and devices, learning how to work with and troubleshoot Gradle errors, learning to deal with the stoic narcissism of Xcode, getting you comfortable patching node_modules packages, digging into Kotlin, Java, and Swift code (when autolinking doesn’t work). 
+
+Notwithstanding the actual release processes in the stores. How to write copy, post screenshots, prepare builds. One of the best gains of this process was learning about Fastlane and how to use it. Truly a great piece of software.
+
+**Expo and Vite are not out-of-the-box experiences when you want to work with the filesystem.** This is a tangential, but interesting finding. I had this novel idea at one point to build a quick-and-dirty Expo monorepo where a separate RN app could be the GUI for managing the texts, stored in SQLite database files. There were errors in the texts that had to be corrected as part of the app release.
+My idea was to place the databases in a shared library and just accessed from a single point., instead of editing the text strings manually in a DB client and keeping those files synchronized between iOS and Android.
+
+Hours later, I realized that it’s actually quicker to make the manual changes in the DB client. Again, a tradeoff between common sense and focusing on the goal. Even when the common sense serves the future.
+
+I can see why now mobile apps take entire teams or companies to produce and launch. Despite the whole endeavour being intricate and involving many non-engineering areas, the real core is writing working, readable, maintainable code which can grow and scale into the next iteration of the product.
