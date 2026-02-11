@@ -3,13 +3,13 @@
 Authors: [Wishwa Hettige](https://github.com/wishwa14), Mina Demian
 
 **Estimated Time**
-- 🕐 First time: 2-3 hours
-- ⚡ Subsequent deploys: 30 minutes
+- First time: 2-3 hours
+- Subsequent deploys: 30 minutes
 
 **Quick Start**
-- 🆕 Need to deploy a new service? → [Start at Part 1](#part-1-set-up-aws-infrastructure-with-terraform)
-- 🔄 Updating existing service? → [Jump to Part 5](#step-52-run-github-actions-workflow)
-- ⚠️ Deployment failed? → [Go to Part 7 Troubleshooting](#part-7-troubleshooting-common-issues)
+- Need to deploy a new service? → [Start at Part 1](#part-1-set-up-aws-infrastructure-with-terraform)
+- Updating existing service? → [Jump to Part 5](#step-52-run-github-actions-workflow)
+- Deployment failed? → [Go to Part 7 Troubleshooting](#part-7-troubleshooting-common-issues)
 
 ---
 
