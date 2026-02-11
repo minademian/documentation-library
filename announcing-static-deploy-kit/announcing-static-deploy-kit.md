@@ -1,4 +1,4 @@
-# static-deploy-kit: Deep Dive
+# static-deploy-kit: OSS Package Announcement
 
 **Author:** Mina Demian
 
